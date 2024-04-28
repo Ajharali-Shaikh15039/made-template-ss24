@@ -1,26 +1,25 @@
-pipeline Exercise1{
+// This Jayvee model describes a pipeline from a CSV file in the web
+// to a SQLite file sink concerning airport data.
+pipeline AirportPipeline {
 
-    fileExtractor
-        -> txtfileinterpretor
-        -> csvInterpreter 
-        -> tableinterpreter
-        -> outputloader;
+    AirportExtractor
+        -> AirportTextFileInterpreter
+        -> AirportCSVInterpreter
+        -> AirportTableInterpreter
+        -> AirportsLoader;
 
-    block fileExtractor oftype HttpExtractor {
+    block AirportExtractor oftype HttpExtractor {
         url: "https://opendata.rhein-kreis-neuss.de/api/explore/v2.1/catalog/datasets/rhein-kreis-neuss-flughafen-weltweit/exports/csv?lang=en&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B";
-
-        }
-
-    block txtfileinterpretor oftype TextFileInterpreter{
-
     }
 
-    block csvInterpreter oftype CSVInterpreter{
-        enclosingEscape:'"';
-        delimiter:";";
+    block AirportTextFileInterpreter oftype TextFileInterpreter { }
+
+    block AirportCSVInterpreter oftype CSVInterpreter {
+        enclosing: '';
+        delimiter: ";";
     }
 
-    block tableinterpreter oftype TableInterpreter {
+    block AirportTableInterpreter oftype TableInterpreter {
         header: true;
         columns: [
             "Lfd. Nummer" oftype integer,
@@ -32,15 +31,16 @@ pipeline Exercise1{
             "Latitude" oftype decimal,
             "Longitude" oftype decimal,
             "Altitude" oftype integer,
-            "Zeitzone" oftype integer,
+            "Zeitzone" oftype decimal,
             "DST" oftype text,
             "Zeitzonen-Datenbank" oftype text,
-            "geo_punkt" oftype decimal,
+            "geo_punkt" oftype text
         ];
-        }
+    }
 
-    block outputloader oftype SQLiteLoader{
+    block AirportsLoader oftype SQLiteLoader {
         table: "airports";
-        file: "airports.sqlite";
-        }
+        file: "./airports.sqlite";
+    }
+
 }
