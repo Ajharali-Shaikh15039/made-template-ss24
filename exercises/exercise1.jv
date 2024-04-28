@@ -31,11 +31,11 @@ pipeline Exercise1{
             "ICAO" oftype text,
             "Latitude" oftype decimal,
             "Longitude" oftype decimal,
-            "Altitude" oftype decimal,
-            "Zeitzone" oftype text,
-            "DST" oftype text, 
+            "Altitude" oftype integer,
+            "Zeitzone" oftype integer,
+            "DST" oftype text,
             "Zeitzonen-Datenbank" oftype text,
-            "geo_punkt" oftype text,
+            "geo_punkt" oftype decimal,
         ];
         }
 
