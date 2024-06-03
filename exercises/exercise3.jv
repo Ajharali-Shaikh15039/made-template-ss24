@@ -1,3 +1,4 @@
+//Exercise 3
 pipeline GoodsPipeline {
 
 	GoodsExtractor
